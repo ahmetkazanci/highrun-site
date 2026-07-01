@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koleksiyon · HIGHRUN Kadın Ayakkabı</title>
+<meta name="description" content="HIGHRUN koleksiyonu — babet, topuklu, sneaker ve makosen modelleri. Zarif, rahat ve şık kadın ayakkabıları. Çocuk koleksiyonu çok yakında.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 60'%3E%3Crect width='56' height='60' rx='12' fill='%23F4ECDD'/%3E%3Crect x='14' y='12' width='5' height='36' rx='1.5' fill='%233B2D23'/%3E%3Crect x='37' y='10' width='5' height='40' rx='1.5' fill='%233B2D23'/%3E%3Cpolygon points='19,30 37,26 37,32 19,36' fill='%23AE8959'/%3E%3C/svg%3E">
+<meta property="og:title" content="Koleksiyon · HIGHRUN Kadın Ayakkabı">
+<meta property="og:description" content="Babet, topuklu, sneaker ve makosen. Zarif, rahat ve şık.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.dsmcdn.com">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="shop">
+<div class="grain"></div>
+<div id="site-header"></div>
+<main id="main">
+
+<section class="phero">
+  <div class="container">
+    <div class="eyebrow">Koleksiyon</div>
+    <h1 class="serif">Tüm Modeller</h1>
+    <p>Günlükten özel güne, her anına uygun zarif ve rahat seçenekler.</p>
+    <div class="crumbs"><a href="index.html">Anasayfa</a> / Koleksiyon</div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:clamp(46px,6vw,70px)">
+  <div class="container">
+    <div class="filters reveal" id="filters"></div>
+    <div class="grid" id="grid"></div>
+    <div id="cocuk-soon" class="soon-empty" style="display:none">
+      <div class="se-ic serif">✦</div>
+      <h3 class="serif">Çocuk koleksiyonu çok yakında</h3>
+      <p>Minikler için aynı özen, aynı zarafet hazırlanıyor. Çıktığı an ilk sen haberdar ol.</p>
+      <a class="btn btn-solid" href="iletisim.html">Haber Ver <span class="ic" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  let activeCat='all';
+  function renderGrid(){
+    const grid=document.getElementById('grid'), soon=document.getElementById('cocuk-soon');
+    document.querySelectorAll('#filters button').forEach(b=>b.classList.toggle('active',b.dataset.cat===activeCat));
+    if(activeCat==='cocuk'){ grid.style.display='none'; soon.style.display='block'; return; }
+    grid.style.display=''; soon.style.display='none';
+    const list = activeCat==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.category===activeCat);
+    grid.replaceChildren();
+    grid.insertAdjacentHTML('beforeend', list.map(productCard).join(''));
+    requestAnimationFrame(()=>grid.querySelectorAll('.rise,.reveal').forEach(el=>el.classList.add('in')));
+  }
+  function pageInit(){
+    const params=new URLSearchParams(location.search);
+    if(params.get('cat')) activeCat=params.get('cat');
+    document.getElementById('filters').insertAdjacentHTML('beforeend',
+      CATEGORIES.map(c=>`<button data-cat="${c.key}" onclick="activeCat='${c.key}';renderGrid()">${c.label}${c.soon?'<span class="dot" aria-hidden="true"></span>':''}</button>`).join(''));
+    renderGrid();
+  }
+</script>
+</body>
+</html>

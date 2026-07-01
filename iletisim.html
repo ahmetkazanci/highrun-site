@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İletişim · HIGHRUN</title>
+<meta name="description" content="HIGHRUN ile iletişime geç — sorularını WhatsApp, e-posta veya Trendyol üzerinden ilet.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 60'%3E%3Crect width='56' height='60' rx='12' fill='%23F6EFE3'/%3E%3Crect x='14' y='12' width='5' height='36' rx='1.5' fill='%2343342A'/%3E%3Crect x='37' y='10' width='5' height='40' rx='1.5' fill='%2343342A'/%3E%3Cpolygon points='19,30 37,26 37,32 19,36' fill='%23B08C61'/%3E%3C/svg%3E">
+<meta property="og:title" content="İletişim · HIGHRUN">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="contact">
+<div class="grain"></div>
+<div id="site-header"></div>
+<main id="main">
+
+<section class="phero">
+  <div class="container">
+    <div class="eyebrow">İletişim</div>
+    <h1 class="serif">Bize Ulaş</h1>
+    <p>Sorun, öneri ya da sipariş yardımı — buradayız.</p>
+    <div class="crumbs"><a href="index.html">Anasayfa</a> / İletişim</div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container contact-grid" style="display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(40px,5vw,72px);align-items:start">
+    <div class="reveal">
+      <div class="eyebrow">Kanallar</div>
+      <h2 class="serif" style="font-size:clamp(28px,3.6vw,40px);font-weight:400;margin:14px 0 28px;letter-spacing:-.02em">Bize ulaşmanın yolları</h2>
+      <div class="channels">
+        <div class="chan"><span class="cl">WhatsApp</span><a class="cv" id="wa-link" href="#" target="_blank" rel="noopener">Mesaj gönder →</a></div>
+        <div class="chan"><span class="cl">E-posta</span><span class="cv">info@highrun.com</span></div>
+        <div class="chan"><span class="cl">Trendyol</span><a class="cv" href="https://www.trendyol.com/magaza/highrun-m-372018" target="_blank" rel="noopener">Mağazamız →</a></div>
+        <div class="chan"><span class="cl">Instagram</span><a class="cv" href="https://instagram.com" target="_blank" rel="noopener">@highrun →</a></div>
+        <div class="chan"><span class="cl">Çalışma Saatleri</span><span class="cv">Hafta içi 09:00 – 18:00</span></div>
+      </div>
+      <p style="color:var(--taupe);margin-top:28px;line-height:1.8;font-size:15px">Genellikle aynı gün içinde yanıt veriyoruz. Sipariş ve iade işlemlerin için WhatsApp en hızlı yoldur.</p>
+    </div>
+    <div class="reveal">
+      <form class="form" novalidate onsubmit="return sendForm(event)">
+        <div class="form-ok" id="form-ok">Teşekkürler. WhatsApp uygulaman açılıyor — mesajını oradan gönderebilirsin.</div>
+        <div class="field" id="fld-name"><label for="f-name">Ad Soyad</label><input id="f-name" placeholder="Adınız"><span class="msg">Lütfen adını yaz.</span></div>
+        <div class="field" id="fld-email"><label for="f-email">E-posta</label><input id="f-email" type="email" placeholder="ornek@mail.com"><span class="msg">Geçerli bir e-posta gir.</span></div>
+        <div class="field" id="fld-msg"><label for="f-msg">Mesajınız</label><textarea id="f-msg" rows="5" placeholder="Nasıl yardımcı olabiliriz?"></textarea><span class="msg">Birkaç kelime yazman yeterli.</span></div>
+        <button class="btn btn-solid" type="submit">WhatsApp ile Gönder <span class="ic" aria-hidden="true">→</span></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  function sendForm(e){
+    e.preventDefault();
+    const n=document.getElementById('f-name').value.trim();
+    const em=document.getElementById('f-email').value.trim();
+    const m=document.getElementById('f-msg').value.trim();
+    const emailOk=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em);
+    let ok=true;
+    const set=(id,bad)=>{ document.getElementById(id).classList.toggle('err',bad); if(bad) ok=false; };
+    set('fld-name', !n);
+    set('fld-email', !emailOk);
+    set('fld-msg', m.length<2);
+    if(!ok){ return false; }
+    document.getElementById('form-ok').classList.add('show');
+    const text=encodeURIComponent(`Merhaba, ben ${n} (${em}).\n${m}`);
+    window.open(`https://wa.me/${WHATSAPP}?text=${text}`,'_blank');
+    return false;
+  }
+  function pageInit(){ document.getElementById('wa-link').href=`https://wa.me/${WHATSAPP}`; }
+</script>
+</body>
+</html>

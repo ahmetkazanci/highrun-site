@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ürün · HIGHRUN</title>
+<meta name="description" content="HIGHRUN kadın ayakkabı — ürün detayı.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 60'%3E%3Crect width='56' height='60' rx='12' fill='%23F4ECDD'/%3E%3Crect x='14' y='12' width='5' height='36' rx='1.5' fill='%233B2D23'/%3E%3Crect x='37' y='10' width='5' height='40' rx='1.5' fill='%233B2D23'/%3E%3Cpolygon points='19,30 37,26 37,32 19,36' fill='%23AE8959'/%3E%3C/svg%3E">
+<meta property="og:type" content="product">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.dsmcdn.com">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="shop">
+<div class="grain"></div>
+<div id="site-header"></div>
+<main id="main">
+
+<div class="container">
+  <div class="crumbs" style="padding:34px 0 0"><a href="index.html">Anasayfa</a> / <a href="shop.html">Koleksiyon</a> / <span id="crumb-name"></span></div>
+  <div class="pdp" id="pdp"></div>
+</div>
+
+<section class="sec-sm vals">
+  <div class="container vgrid">
+    <div class="vitem"><div class="vno serif">✦</div><h4>Kargo Bedava</h4><p>Tüm siparişlerde ücretsiz, hızlı teslimat.</p></div>
+    <div class="vitem"><div class="vno serif">✦</div><h4>Kolay İade</h4><p>14 gün içinde koşulsuz iade ve değişim.</p></div>
+    <div class="vitem"><div class="vno serif">✦</div><h4>Güvenli Alışveriş</h4><p>Trendyol güvencesiyle güvenli ödeme.</p></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-head"><div class="eyebrow center">Bunları da Beğenebilirsin</div><h2 class="serif">Benzer Modeller</h2></div>
+    <div class="grid" id="related"></div>
+  </div>
+</section>
+
+</main>
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  let selSize=null, curId=null, curP=null;
+  function showImg(i){
+    document.getElementById('pdp-main-img').src=curP.images[i];
+    document.querySelectorAll('.pdp-thumbs .thumb').forEach(t=>t.classList.toggle('active',+t.dataset.i===i));
+  }
+  function selectSize(s){
+    selSize=s;
+    document.querySelectorAll('.size').forEach(el=>el.classList.toggle('sel',+el.dataset.s===s));
+    const w=document.getElementById('size-warn'); if(w) w.style.display='none';
+  }
+  function doAdd(){
+    if(!selSize){ const w=document.getElementById('size-warn'); w.style.display='block'; w.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+    addToCart(curId,selSize,1);
+  }
+  function pageInit(){
+    const id=new URLSearchParams(location.search).get('id');
+    const p=getProduct(id)||PRODUCTS[0]; curId=p.id; curP=p;
+    document.title=p.name+' · HIGHRUN';
+    document.getElementById('crumb-name').textContent=p.name;
+    const thumbs=p.images.map((im,i)=>`<div class="thumb${i===0?' active':''}" data-i="${i}" onclick="showImg(${i})"><img src="${im}" alt="${p.name} görsel ${i+1}"></div>`).join('');
+    const variantsLine = p.variants>1 ? `<div class="pdp-variants">${p.color} · görseller arasında geç</div>` : '';
+    const fromTag = p.variants>1 ? '<span class="from">başlayan</span>' : '';
+    document.getElementById('pdp').insertAdjacentHTML('beforeend', `
+      <div class="pdp-gallery">
+        <div class="pdp-main"><img id="pdp-main-img" src="${p.images[0]}" alt="${p.name}"></div>
+        <div class="pdp-thumbs">${thumbs}</div>
+      </div>
+      <div class="pdp-info">
+        <div class="cat">${p.cat}</div>
+        <h1>${p.name}</h1>
+        <div class="pdp-price">${fromTag}${p.price}<span class="cur">TL</span></div>
+        ${variantsLine}
+        <p class="pdp-desc">${p.desc}</p>
+        <div class="pdp-label"><span>Numara Seç</span><a href="numara-tablosu.html">Numara tablosu →</a></div>
+        <div class="sizes">${p.sizes.map(s=>`<div class="size" data-s="${s}" onclick="selectSize(${s})">${s}</div>`).join('')}</div>
+        <div id="size-warn" class="form-ok" style="display:none;background:rgba(181,80,62,.1);border-color:rgba(181,80,62,.35);color:#9c4636;margin-bottom:16px">Lütfen önce bir numara seç.</div>
+        <div class="pdp-actions">
+          <button class="btn btn-solid" onclick="doAdd()">Sepete Ekle <span class="ic" aria-hidden="true">→</span></button>
+          <a class="btn btn-ghost simple" href="${p.trendyol}" target="_blank" rel="noopener">Trendyol'da Al</a>
+        </div>
+        <div class="pdp-features">
+          ${p.features.map(f=>`<div><b>${f[0]}</b>${f[1]}</div>`).join('')}
+          <div><b>Kargo</b>Ücretsiz · 1–3 iş günü</div>
+        </div>
+      </div>`);
+    document.getElementById('related').insertAdjacentHTML('beforeend', PRODUCTS.filter(x=>x.id!==p.id).slice(0,4).map(productCard).join(''));
+    requestAnimationFrame(()=>document.querySelectorAll('#related .rise').forEach(el=>el.classList.add('in')));
+  }
+</script>
+</body>
+</html>

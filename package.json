@@ -1,0 +1,10 @@
+{
+  "name": "highrun-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HIGHRUN — static e-commerce site (vanilla HTML/CSS/JS, no build step).",
+  "scripts": {
+    "dev": "npx --yes live-server --port=5173 --entry-file=index.html .",
+    "serve": "npx --yes serve --listen 5173 ."
+  }
+}
